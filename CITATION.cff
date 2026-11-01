@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this harness, cite the repository and the pinned llama.cpp commit."
+title: "quant-quality-harness"
+abstract: "Reproducible GGUF quantization quality, speed, and VRAM measurements with per-run JSON artifacts."
+authors:
+  - family-names: "Mkdad"
+    given-names: "Noor"
+repository-code: "https://github.com/DrMkdaddy/quant-quality-harness"
+license: MIT
+date-released: "2026-11-01"

@@ -1,0 +1,54 @@
+{
+  "name": "qwen2.5-3b-instruct",
+  "corpus_url": "https://huggingface.co/datasets/ggml-org/ci/resolve/main/wikitext-2-raw-v1.zip",
+  "corpus_member": "wikitext-2-raw/wiki.test.raw",
+  "reference": "F16",
+  "perplexity": {
+    "context": 512,
+    "chunks": 8,
+    "batch": 512,
+    "gpu_layers": 99,
+    "flash_attn": "on",
+    "threads": 8
+  },
+  "bench": {
+    "prompt_tokens": 512,
+    "gen_tokens": 128,
+    "repetitions": 3,
+    "gpu_layers": 99,
+    "flash_attn": "on",
+    "threads": 8
+  },
+  "quants": [
+    {
+      "name": "F16",
+      "filename": "Qwen2.5-3B-Instruct-f16.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-f16.gguf"
+    },
+    {
+      "name": "Q8_0",
+      "filename": "Qwen2.5-3B-Instruct-Q8_0.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q8_0.gguf"
+    },
+    {
+      "name": "Q6_K",
+      "filename": "Qwen2.5-3B-Instruct-Q6_K.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q6_K.gguf"
+    },
+    {
+      "name": "Q5_K_M",
+      "filename": "Qwen2.5-3B-Instruct-Q5_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q5_K_M.gguf"
+    },
+    {
+      "name": "Q4_K_M",
+      "filename": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf"
+    },
+    {
+      "name": "IQ4_XS",
+      "filename": "Qwen2.5-3B-Instruct-IQ4_XS.gguf",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-IQ4_XS.gguf"
+    }
+  ]
+}
