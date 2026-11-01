@@ -1,0 +1,502 @@
+{
+  "schema": "quantlab/v1",
+  "run_id": "20261101T234442Z",
+  "generated_at": "2026-11-01T23:46:00.933769+00:00",
+  "model_family": "qwen2.5-3b-instruct",
+  "hardware": {
+    "hostname": "nasr",
+    "platform": "Linux-7.3.0-2-cachyos-bore-x86_64-with-glibc2.44",
+    "machine": "x86_64",
+    "cpu": "",
+    "cpu_count": 16,
+    "gpu": "AMD Radeon RX 9070 XT"
+  },
+  "llama_cpp": {
+    "version": "0.4.1-dev",
+    "build": "11050",
+    "commit": "60b06ab9a",
+    "bin_dir": "/home/noorm/llama.cpp/llama-b11050"
+  },
+  "corpus": {
+    "path": "/home/noorm/models/quant-lab/wiki.test.raw",
+    "sha256": "173c87a53759e0201f33e0ccf978e510c2042d7f2cb78229d9a50d79b9e7dd08",
+    "bytes": 1290590,
+    "context": 512,
+    "chunks": 8,
+    "tokens_evaluated": 4096
+  },
+  "reference": {
+    "quant": "F16",
+    "logits_path": "results/reference-qwen2.5-3b-instruct-F16.logits",
+    "logits_bytes": 619931604
+  },
+  "results": [
+    {
+      "quant": "F16",
+      "name": "F16",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-f16.gguf",
+      "file_bytes": 6178317216,
+      "sha256": "25908e409af8c952a17c8fda44b90e699565a90436431574f44c25d140aa5032",
+      "quality": {
+        "ppl": 9.13175,
+        "ppl_base": null,
+        "ppl_ratio": 1.0,
+        "kl_mean": null,
+        "kl_median": null,
+        "kl_p95": null,
+        "kl_p99": null,
+        "mean_delta_p_pct": null,
+        "ppl_standalone": 9.1813
+      },
+      "speed": {
+        "prompt_tps": 8913.09872,
+        "decode_tps": 84.111562
+      },
+      "vram": {
+        "ppl_delta_bytes": 6560329728,
+        "bench_delta_bytes": 6517821440,
+        "peak_delta_bytes": 6560329728
+      },
+      "timing": {
+        "ppl_seconds": 5.745,
+        "bench_seconds": 6.988
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-f16.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--save-all-logits",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-f16.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/F16.ppl.log",
+        "bench": "results/logs/20261101T234442Z/F16.bench.log"
+      }
+    },
+    {
+      "quant": "Q8_0",
+      "name": "Q8_0",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q8_0.gguf",
+      "file_bytes": 3285476512,
+      "sha256": "12491ec9f03aab7f0b96cdb7742695e6583d17ee129de48332d04b9cf6acd960",
+      "quality": {
+        "ppl": 9.16074,
+        "ppl_base": 9.13175,
+        "ppl_ratio": 1.003175,
+        "kl_mean": 0.001973,
+        "kl_median": 0.001451,
+        "kl_p95": 0.005678,
+        "kl_p99": 0.010527,
+        "mean_delta_p_pct": -0.031,
+        "ppl_standalone": null
+      },
+      "speed": {
+        "prompt_tps": 9536.394755,
+        "decode_tps": 138.245646
+      },
+      "vram": {
+        "ppl_delta_bytes": 3666305024,
+        "bench_delta_bytes": 3625463808,
+        "peak_delta_bytes": 3666305024
+      },
+      "timing": {
+        "ppl_seconds": 3.426,
+        "bench_seconds": 4.36
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q8_0.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--kl-divergence",
+          "--kl-divergence-base",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q8_0.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/Q8_0.ppl.log",
+        "bench": "results/logs/20261101T234442Z/Q8_0.bench.log"
+      }
+    },
+    {
+      "quant": "Q6_K",
+      "name": "Q6_K",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q6_K.gguf",
+      "file_bytes": 2538159264,
+      "sha256": "97a1b3e9dbcc2053c3a2026a823b4a169ecd4095ca5b3fcc68ec109ea4501e93",
+      "quality": {
+        "ppl": 9.285845,
+        "ppl_base": 9.13175,
+        "ppl_ratio": 1.016875,
+        "kl_mean": 0.006416,
+        "kl_median": 0.004749,
+        "kl_p95": 0.017362,
+        "kl_p99": 0.03559,
+        "mean_delta_p_pct": -0.152,
+        "ppl_standalone": null
+      },
+      "speed": {
+        "prompt_tps": 8073.9175,
+        "decode_tps": 173.900068
+      },
+      "vram": {
+        "ppl_delta_bytes": 2913144832,
+        "bench_delta_bytes": 2926411776,
+        "peak_delta_bytes": 2926411776
+      },
+      "timing": {
+        "ppl_seconds": 2.884,
+        "bench_seconds": 3.604
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q6_K.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--kl-divergence",
+          "--kl-divergence-base",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q6_K.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/Q6_K.ppl.log",
+        "bench": "results/logs/20261101T234442Z/Q6_K.bench.log"
+      }
+    },
+    {
+      "quant": "Q5_K_M",
+      "name": "Q5_K_M",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q5_K_M.gguf",
+      "file_bytes": 2224815264,
+      "sha256": "e4180cbad78d8848bd10839e7fd07edd573c4a5b01148c2b3f7ce2763a2a0938",
+      "quality": {
+        "ppl": 9.383963,
+        "ppl_base": 9.13175,
+        "ppl_ratio": 1.027619,
+        "kl_mean": 0.01118,
+        "kl_median": 0.007151,
+        "kl_p95": 0.031713,
+        "kl_p99": 0.088599,
+        "mean_delta_p_pct": -0.284,
+        "ppl_standalone": null
+      },
+      "speed": {
+        "prompt_tps": 9206.393222,
+        "decode_tps": 182.92399
+      },
+      "vram": {
+        "ppl_delta_bytes": 2666954752,
+        "bench_delta_bytes": 2592272384,
+        "peak_delta_bytes": 2666954752
+      },
+      "timing": {
+        "ppl_seconds": 2.7,
+        "bench_seconds": 3.439
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q5_K_M.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--kl-divergence",
+          "--kl-divergence-base",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q5_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/Q5_K_M.ppl.log",
+        "bench": "results/logs/20261101T234442Z/Q5_K_M.bench.log"
+      }
+    },
+    {
+      "quant": "Q4_K_M",
+      "name": "Q4_K_M",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+      "file_bytes": 1929903264,
+      "sha256": "9c9f56a391a3abbd5b89d0245bf6106081bcc3173119d4229235dd9d23253f94",
+      "quality": {
+        "ppl": 9.518681,
+        "ppl_base": 9.13175,
+        "ppl_ratio": 1.042372,
+        "kl_mean": 0.028534,
+        "kl_median": 0.017615,
+        "kl_p95": 0.088485,
+        "kl_p99": 0.205714,
+        "mean_delta_p_pct": -0.476,
+        "ppl_standalone": null
+      },
+      "speed": {
+        "prompt_tps": 9464.436633,
+        "decode_tps": 200.61271
+      },
+      "vram": {
+        "ppl_delta_bytes": 2327298048,
+        "bench_delta_bytes": 2287132672,
+        "peak_delta_bytes": 2327298048
+      },
+      "timing": {
+        "ppl_seconds": 2.392,
+        "bench_seconds": 3.064
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--kl-divergence",
+          "--kl-divergence-base",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/Q4_K_M.ppl.log",
+        "bench": "results/logs/20261101T234442Z/Q4_K_M.bench.log"
+      }
+    },
+    {
+      "quant": "IQ4_XS",
+      "name": "IQ4_XS",
+      "path": "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-IQ4_XS.gguf",
+      "file_bytes": 1739095200,
+      "sha256": "8b41568ef1a91510c8c2aa0dcc0f1a8142c70e036cd311f9a0f3d1f24e284c04",
+      "quality": {
+        "ppl": 9.589181,
+        "ppl_base": 9.13175,
+        "ppl_ratio": 1.050092,
+        "kl_mean": 0.043635,
+        "kl_median": 0.023993,
+        "kl_p95": 0.133755,
+        "kl_p99": 0.302182,
+        "mean_delta_p_pct": -0.459,
+        "ppl_standalone": null
+      },
+      "speed": {
+        "prompt_tps": 9112.489288,
+        "decode_tps": 206.163203
+      },
+      "vram": {
+        "ppl_delta_bytes": 2132897792,
+        "bench_delta_bytes": 2092650496,
+        "peak_delta_bytes": 2132897792
+      },
+      "timing": {
+        "ppl_seconds": 2.618,
+        "bench_seconds": 3.085
+      },
+      "commands": {
+        "ppl": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-perplexity",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-IQ4_XS.gguf",
+          "-f",
+          "/home/noorm/models/quant-lab/wiki.test.raw",
+          "-c",
+          "512",
+          "--chunks",
+          "8",
+          "-b",
+          "512",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "--kl-divergence",
+          "--kl-divergence-base",
+          "results/reference-qwen2.5-3b-instruct-F16.logits"
+        ],
+        "bench": [
+          "/home/noorm/llama.cpp/llama-b11050/llama-bench",
+          "-m",
+          "/home/noorm/models/quant-lab/Qwen2.5-3B-Instruct-IQ4_XS.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-t",
+          "8",
+          "-o",
+          "json"
+        ]
+      },
+      "logs": {
+        "ppl": "results/logs/20261101T234442Z/IQ4_XS.ppl.log",
+        "bench": "results/logs/20261101T234442Z/IQ4_XS.bench.log"
+      }
+    }
+  ]
+}

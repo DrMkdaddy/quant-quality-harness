@@ -53,7 +53,9 @@ def parse_bench_json(text: str) -> list[dict[str, Any]]:
     start = text.find("[")
     if start < 0:
         raise ValueError("llama-bench output has no JSON array")
-    rows = json.loads(text[start:])
+    # llama-bench may print backend warnings after the JSON array, so parse
+    # exactly one JSON value instead of assuming the rest of stdout is clean.
+    rows, _ = json.JSONDecoder().raw_decode(text[start:])
     if not isinstance(rows, list):
         raise ValueError("llama-bench JSON is not an array")
     return rows
@@ -69,13 +71,15 @@ def summarize_bench(rows: list[dict[str, Any]]) -> dict[str, float | None]:
     prompt = None
     decode = None
     for row in rows:
-        test = str(row.get("test", ""))
         ts = row.get("avg_ts")
         if ts is None:
             continue
-        if test.startswith("pp"):
+        test = str(row.get("test", ""))
+        n_prompt = int(row.get("n_prompt", 0) or 0)
+        n_gen = int(row.get("n_gen", 0) or 0)
+        if test.startswith("pp") or (test == "" and n_prompt > 0 and n_gen == 0):
             prompt = float(ts)
-        elif test.startswith("tg"):
+        elif test.startswith("tg") or (test == "" and n_gen > 0 and n_prompt == 0):
             decode = float(ts)
     return {"prompt_tps": prompt, "decode_tps": decode}
 

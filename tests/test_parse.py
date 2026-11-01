@@ -40,8 +40,11 @@ BENCH = """\
 ggml_vulkan: warning
 [
   {"test":"pp512","avg_ts":1234.5},
-  {"test":"tg128","avg_ts":98.7}
+  {"test":"tg128","avg_ts":98.7},
+  {"n_prompt":512,"n_gen":0,"avg_ts":4321.0},
+  {"n_prompt":0,"n_gen":128,"avg_ts":87.6}
 ]
+load_backend: loaded Vulkan backend
 """
 
 VRAM = '{"card0": {"VRAM Total Memory (B)": "17095983104", "VRAM Total Used Memory (B)": "1317588992"}}'
@@ -71,10 +74,10 @@ class ParsePerplexityTests(unittest.TestCase):
 class ParseBenchTests(unittest.TestCase):
     def test_json_prefix_warning(self):
         rows = parse_bench_json(BENCH)
-        self.assertEqual(len(rows), 2)
+        self.assertEqual(len(rows), 4)
         speed = summarize_bench(rows)
-        self.assertAlmostEqual(speed["prompt_tps"], 1234.5)
-        self.assertAlmostEqual(speed["decode_tps"], 98.7)
+        self.assertAlmostEqual(speed["prompt_tps"], 4321.0)
+        self.assertAlmostEqual(speed["decode_tps"], 87.6)
 
     def test_no_json(self):
         with self.assertRaises(ValueError):

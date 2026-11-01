@@ -146,24 +146,32 @@ def _binaries(llama_bin: Path) -> dict[str, Path]:
 
 def _hardware() -> dict[str, Any]:
     gpu = None
-    for command in (["rocm-smi", "--showproductname", "--json"], ["lspci"]):
-        try:
-            if command[0] == "rocm-smi":
-                proc = subprocess.run(command, capture_output=True, text=True, check=False)
-                if proc.returncode == 0:
-                    gpu = proc.stdout.strip()
+    try:
+        proc = subprocess.run(
+            ["rocm-smi", "--showproductname", "--json"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if proc.returncode == 0:
+            data = json.loads(proc.stdout)
+            for card in data.values():
+                if isinstance(card, dict) and card.get("Card Series"):
+                    gpu = str(card["Card Series"])
                     break
-            else:
-                proc = subprocess.run(
-                    ["bash", "-lc", "lspci | grep -Ei 'vga|display'"],
-                    capture_output=True,
-                    text=True,
-                    check=False,
-                )
-                gpu = proc.stdout.strip()
-                break
-        except FileNotFoundError:
-            continue
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        pass
+    if gpu is None:
+        try:
+            proc = subprocess.run(
+                ["bash", "-lc", "lspci | grep -Ei 'vga|display' | head -1"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            gpu = proc.stdout.strip() or None
+        except OSError:
+            pass
     return {
         "hostname": platform.node(),
         "platform": platform.platform(),
@@ -318,6 +326,23 @@ def run_sweep(
             f"KL {rows[-1]['quality']['kl_mean'] if rows[-1]['quality']['kl_mean'] is not None else 0:.6f}  "
             f"tg {speed['decode_tps']} tok/s"
         )
+
+    # The standalone F16 PPL and the KL run's PPL(base) are computed over
+    # different token subsets (the KL path uses the last half of each chunk).
+    # Use the KL-path base for the reference row so every row in the table is
+    # on the same evaluation subset. Keep the standalone number as provenance.
+    base_ppl = next(
+        (r["quality"]["ppl_base"] for r in rows if r["quality"]["ppl_base"] is not None),
+        None,
+    )
+    if base_ppl is not None:
+        for row in rows:
+            row["quality"]["ppl_standalone"] = row["quality"]["ppl"]
+            if row["quant"] == config.reference:
+                row["quality"]["ppl"] = base_ppl
+                row["quality"]["ppl_ratio"] = 1.0
+            else:
+                row["quality"]["ppl_standalone"] = None
 
     artifact = {
         "schema": SCHEMA,

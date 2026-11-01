@@ -56,7 +56,36 @@ The committed run is in [`results/`](results/). The table below is generated
 from that artifact, not typed by hand.
 
 <!-- RESULTS:START -->
-Run `python3 -m quantlab report results/quant_quality_*.json` after a sweep.
+Source: `results/quant_quality_qwen2.5-3b-instruct_20261101T234442Z.json`
+
+| Quant | File GiB | PPL | vs F16 | KL mean | KL p95 | mean Δp | tg tok/s | VRAM GiB |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| F16 | 5.75 | 9.1318 | 1.000x | 0 | 0 | 0% | 84.1 | 6.11 |
+| Q8_0 | 3.06 | 9.1607 | 1.003x | 0.001973 | 0.005678 | -0.03% | 138.2 | 3.41 |
+| Q6_K | 2.36 | 9.2858 | 1.017x | 0.006416 | 0.017362 | -0.15% | 173.9 | 2.73 |
+| Q5_K_M | 2.07 | 9.3840 | 1.028x | 0.011180 | 0.031713 | -0.28% | 182.9 | 2.48 |
+| Q4_K_M | 1.80 | 9.5187 | 1.042x | 0.028534 | 0.088485 | -0.48% | 200.6 | 2.17 |
+| IQ4_XS | 1.62 | 9.5892 | 1.050x | 0.043635 | 0.133755 | -0.46% | 206.2 | 1.99 |
+
+llama.cpp 0.4.1-dev (60b06ab9a), AMD Radeon RX 9070 XT, wikitext-2 test,
+512 context x 8 chunks.
+
+What the table says:
+
+- Q4_K_M is the serving point: +4.2% PPL over F16, 2.4x the
+  single-stream decode rate, and 2.17 GiB of VRAM instead of 6.11 GiB.
+- Q8_0 is nearly free in quality (+0.3% PPL, KL 0.0020) but leaves
+  half the speed on the table compared with Q4_K_M.
+- IQ4_XS is the fastest file (206 tok/s) but its KL is 15x Q4_K_M's
+  and its PPL is +5.0% over F16. The extra 5.6 tok/s over Q4_K_M is
+  not worth doubling the distribution shift unless memory is the
+  binding constraint.
+- Q5_K_M is the conservative middle: +2.8% PPL, 183 tok/s, KL 0.011.
+
+The reference row uses the KL path's `PPL(base)` (9.1318), not the
+standalone F16 PPL (9.1813), because the two are computed over different
+token subsets. The standalone number is kept in the JSON as
+`ppl_standalone`.
 <!-- RESULTS:END -->
 
 ## Method
@@ -87,6 +116,10 @@ Run `python3 -m quantlab report results/quant_quality_*.json` after a sweep.
   batch > 1; the serving scheduler project measures that separately.
 - VRAM sampling is 100 ms, so a short spike between samples can be missed.
   The useful signal is the sustained footprint, not the absolute peak.
+- The sweep uses the local `llama-b11050` build. The newer local build's
+  `llama-perplexity` segfaulted on the same model and corpus before producing
+  a token, so the binary is pinned and its commit is recorded in the artifact.
+  This is a harness provenance detail, not a claim about upstream.
 
 ## Layout
 

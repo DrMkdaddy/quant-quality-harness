@@ -11,7 +11,7 @@ from .config import ConfigError, load_config
 from .runner import RunError, fetch, render_markdown, run_sweep
 
 
-DEFAULT_LLAMA_BIN = Path.home() / "llama.cpp" / "src-b11050" / "build" / "bin"
+DEFAULT_LLAMA_BIN = Path.home() / "llama.cpp" / "llama-b11050"
 
 
 def _common() -> argparse.ArgumentParser:
