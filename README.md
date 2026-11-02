@@ -1,5 +1,7 @@
 # quant-quality-harness
 
+[![test](https://github.com/DrMkdaddy/quant-quality-harness/actions/workflows/test.yml/badge.svg)](https://github.com/DrMkdaddy/quant-quality-harness/actions/workflows/test.yml)
+
 Measure what a GGUF quantization costs: perplexity, KL divergence against a
 full-precision reference, single-stream speed, and peak VRAM, on the same
 corpus and with the same llama.cpp build.
